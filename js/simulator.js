@@ -13,6 +13,12 @@ if ($.browser.webkit || $.browser.mozilla) {
             a100: {
                 ua: "Mozilla/5.0 (Linux; U; Android 3.2; en-us; A100 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13"
             },
+            torch: {
+                ua: "BlackBerry; U; BlackBerry 9860; xx-xx) AppleWebKit/534.11+ (KHTML, like Gecko) Version/6.1.0.76 Mobile Safari/534.11+"
+            },
+            playbook: {
+                ua: "Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.0.0; en-US) AppleWebKit/535.1+ (KHTML, like Gecko) Version/7.2.0.0 Safari/535.1+"
+            },
             n9: {
                 ua: "Mozilla/5.0 (MeeGo; NokiaN950-00/00) AppleWebKit/534.13 (KHTML, like Gecko) NokiaBrowser/8.5.0 Mobile Safari/534.13"
             }
@@ -131,7 +137,9 @@ if ($.browser.webkit || $.browser.mozilla) {
                                             { text: "Apple iPad 2", value: "ipad" },
                                             { text: "Apple iPhone 4", value: "iphone" },
                                             { text: "Google Nexus S", value: "nexuss" },
-                                            { text: "Acer Iconia Tab A100", value: "a100" }
+                                            { text: "Acer Iconia Tab A100", value: "a100" },
+                                            { text: "BlackBerry Torch 9860", value: "torch" },
+                                            { text: "BlackBerry PlayBook", value: "playbook" }
                                         ],
                                         dataTextField: "text",
                                         dataValueField: "value"
