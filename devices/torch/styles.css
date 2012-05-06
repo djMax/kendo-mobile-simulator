@@ -5,72 +5,37 @@
 
 .device-container.vertical .device-skin
 {
-    padding-top: 2.74cm;
     background-image: url("images/vertical.png");
 }
 
 .device-container.horizontal .device-skin
 {
-    padding-top: 1.22cm;
     background-image: url("images/horizontal.png");
 }
 
 .device-container.vertical
 {
-    bottom: -150px;
-    width: 864px;
-    height: 800px;
-    padding: 3.88cm 8.24cm 8.46cm 8.3cm;
+    bottom: -350px;
+    width: 1157px;
+    height: 1188px;
+    padding: 2.5cm 12.42cm 16.28cm 10.54cm;
 }
 
 .device-container.horizontal
 {
-    bottom: -150px;
-    width: 1115px;
-    height: 704px;
-    padding: 2.34cm 9.69cm 11.78cm;
+    bottom: -450px;
+    width: 1571px;
+    height: 1064px;
+    padding: .94cm 14.26cm 19.56cm 14.66cm;
+    left: -150px
 }
 
 #address-bar
 {
-    height: 18px;
-}
-
-.device-container.vertical #address-bar
-{
-    left: 346px;
-    top: 116px;
-    width: 154px;
-}
-
-.device-container.horizontal #address-bar
-{
-    left: 396px;
-    top: 57px;
-    width: 303px;
+    display: none;
 }
 
 .device-container #navigate-back
 {
-    background: rgba(255,255,255,.3);
-    width: 25px;
-    height: 25px;
-}
-
-.device-container #navigate-back:hover
-{
-    background: rgba(255,255,255,.1);
-}
-
-.device-container.vertical #navigate-back
-{
-    top: auto;
-    bottom: 275px;
-    left: 336px;
-}
-
-.device-container.horizontal #navigate-back
-{
-    top: 47px;
-    left: 322px;
+    display: none;
 }
