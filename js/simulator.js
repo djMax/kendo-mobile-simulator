@@ -22,7 +22,7 @@ if ($.browser.webkit || $.browser.mozilla) {
             n9: {
                 ua: "Mozilla/5.0 (MeeGo; NokiaN950-00/00) AppleWebKit/534.13 (KHTML, like Gecko) NokiaBrowser/8.5.0 Mobile Safari/534.13"
             }
-        };
+        }, currentDevice = detectOS(mobiles["ipad"].ua);
 
         function detectOS(ua) {
             var os = false, match = [],
@@ -72,7 +72,7 @@ if ($.browser.webkit || $.browser.mozilla) {
             var devicename = deviceSelector.value(),
                 head = $(document.getElementsByTagName("head")[0]),
                 deviceLink = head.find("link[href*='devices/']"),
-                url = "devices/" + devicename + "/styles.css", newLink, os, matches;
+                url = "devices/" + devicename + "/styles.css", newLink, matches;
 
             if (!$.browser.msie) {
                 newLink = deviceLink
@@ -86,9 +86,11 @@ if ($.browser.webkit || $.browser.mozilla) {
             head.append(newLink);
 
             if (frame.contentWindow.kendo)
-                os = frame.contentWindow.kendo.support.mobileOS = detectOS(mobiles[devicename].ua);
+                currentDevice = frame.contentWindow.kendo.support.mobileOS = detectOS(mobiles[devicename].ua);
 
-            $(foreignDocument.body).removeClass("km-ios km-android").addClass("km-" + (!os ? "ios" : os.name));
+            setOrientation($(".device-container")[0].className.match(/horizontal|vertical/)[0]);
+
+            $(foreignDocument.body).removeClass("km-ios km-android").addClass("km-" + (!currentDevice ? "ios" : currentDevice.name));
             matches = deviceSelector.text().match(/(^\w+)\s(.*)/m);
             $(".description .device")
                     .html(matches[1] + "<span class='model'>" + matches[2] + "</span>")
@@ -122,6 +124,30 @@ if ($.browser.webkit || $.browser.mozilla) {
             changeFontSize();
         }
 
+        function changeFontSize() {
+            $(frame.contentWindow.document.documentElement).css({
+                fontSize: $(".device-skin").css("font-size")
+            }).css("font-size");
+        }
+
+        function setOrientation(orientation) {
+            var orientationClass = "km-" + orientation;
+
+            $(".device-container")
+                .removeClass("horizontal vertical")
+                .addClass(orientation);
+
+            if (currentDevice.blackberry) {
+                orientationClass = orientationClass == "km-horizontal" ? "km-vertical" : "km-horizontal";
+            }
+
+            frame.contentWindow.orientation = orientationClass == "km-horizontal" ? 90 : 0;
+
+            $(foreignDocument.documentElement)
+                .removeClass("km-horizontal km-vertical")
+                .addClass(orientationClass);
+        }
+
         var deviceSelector = $("#device-selector")
                                     .val("ipad")
                                     .change( function () {
@@ -149,18 +175,10 @@ if ($.browser.webkit || $.browser.mozilla) {
             addressBar = $("#address-bar"),
             foreignDocument;
 
-        function changeFontSize() {
-            $(frame.contentWindow.document.documentElement).css({
-                fontSize: $(".device-skin").css("font-size")
-            }).css("font-size");
-        }
-
         $(window).bind("DOMFrameContentLoaded", function () { setTimeout(changeFontSize, 300); } );
         $(frame.contentWindow).bind("DOMContentLoaded", changeFontSize);
 
         frame.onload = function () {
-            frame.contentWindow.orientation = $(".device-container").hasClass("horizontal") ? 90 : 0;
-
             foreignDocument = frame.contentWindow.document;
             if (frame.src != addressBar.val())
                 addressBar.val(frame.src);
@@ -185,14 +203,7 @@ if ($.browser.webkit || $.browser.mozilla) {
                     if (!$(".device-container").hasClass(button.data("orientation"))) {
                         $(".content").kendoStop(true, true).kendoAnimate("slide:left", function () {
 
-                            $(".device-container")
-                                .removeClass("horizontal vertical")
-                                .addClass(currentOrientation);
-
-                            frame.contentWindow.orientation = currentOrientation == "horizontal" ? 90 : 0;
-                            $(foreignDocument.documentElement)
-                                .removeClass("km-horizontal km-vertical")
-                                .addClass("km-" + currentOrientation);
+                            setOrientation(currentOrientation);
 
                             $(".device-container")[0].style.cssText = "";
 
