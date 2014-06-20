@@ -1,19 +1,23 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mobile Simulator</title>
+    <title>Kendo UI Online Multi-Device simulator | Kendo UI demos</title>
+    <meta content="Play with Kendo UI mobile simulator and quickly test out Kendo UI in different mobile devices." name="description" />
 
-    <link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.common.min.css" rel="stylesheet" />
-    <link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.black.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.metroblack.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="devices/ipad/styles.css" />
     <link rel="stylesheet" href="styles/styles.css" />
 
-    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.all.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.timezones.min.js"></script>
     <script>
-        if (kendo.support.mobileOS)
-            top.location.href = "content/";
+        if (kendo.support.mobileOS) {
+            top.location.href = "content";
+        }
     </script>
 </head>
 <body class="k-content">
@@ -29,9 +33,11 @@
         <div class="description">
             <div class="device">
                 Apple
-                <span class="model">iPad 2</span>
+                <span class="model">iPad Air</span>
             </div>
-            Kendo UI Mobile helps developers build apps and sites for mobile devices that always provide native look and feel. On iOS, Kendo UI Mobile widgets look native to iOS. On Android, Kendo UI Mobile widgets look native to Android. Automatically, Kendo UI Mobile tries to detect the device and applies the proper styling.
+            <p>Kendo UI Mobile helps developers build apps and sites for mobile devices that always provide native look and feel.</p>
+            <p>On iOS, Kendo UI Mobile widgets look native to iOS. On Android, Kendo UI Mobile widgets look native to Android.</p>
+            <p>Automatically, Kendo UI Mobile tries to detect the device and applies the proper styling.</p>
         </div>
     </div>
     <div class="content">
@@ -39,7 +45,7 @@
             <div class="device-skin"></div>
             <input id="address-bar" type="text" onchange="frame.src = 'http://' + this.value.replace('http://', '')" />
             <button id="navigate-back"></button>
-            <iframe id="simulator" src="content/" width="100%" height="100%"></iframe>
+            <iframe id="simulator" src="content"></iframe>
         </div>
     </div>
     <div class="fake3d"></div>

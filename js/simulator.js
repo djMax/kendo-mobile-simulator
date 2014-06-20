@@ -1,134 +1,41 @@
-if ($.browser.webkit || $.browser.mozilla) {
+if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.support.browser.msie && kendo.support.browser.version >= 10)) {
     (function($, undefined) {
-        var mobiles = {
-            ipad: {
-                ua: "Mozilla/5.0(iPad; U; CPU OS 4_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8F191 Safari/6533.18.5"
-            },
-            iphone: {
-                ua: "Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; xx-xx) AppleWebKit/532.9 (KHTML, like Gecko) Mobile/7D11"
-            },
-            nexuss: {
-                ua: "Mozilla/5.0 (Linux; U; Android 2.3.3; en-gb; Nexus S Build/GRI20) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
-            },
-            a100: {
-                ua: "Mozilla/5.0 (Linux; U; Android 3.2; en-us; A100 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13"
-            },
-            torch: {
-                ua: "BlackBerry; U; BlackBerry 9860; xx-xx) AppleWebKit/534.11+ (KHTML, like Gecko) Version/6.1.0.76 Mobile Safari/534.11+"
-            },
-            playbook: {
-                ua: "Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.0.0; en-US) AppleWebKit/535.1+ (KHTML, like Gecko) Version/7.2.0.0 Safari/535.1+"
-            },
-            n9: {
-                ua: "Mozilla/5.0 (MeeGo; NokiaN950-00/00) AppleWebKit/534.13 (KHTML, like Gecko) NokiaBrowser/8.5.0 Mobile Safari/534.13"
-            }
-        }, currentDevice = detectOS(mobiles["ipad"].ua);
-
-        function detectOS(ua) {
-            var os = false, match = [],
-                agentRxs = {
-                    fire: /(Silk)\/(\d+)\.(\d+(\.\d+)?)/,
-                    android: /(Android)\s+(\d+)\.(\d+(\.\d+)?)/,
-                    iphone: /(iPhone|iPod).*OS\s+(\d+)[\._]([\d\._]+)/,
-                    ipad: /(iPad).*OS\s+(\d+)[\._]([\d_]+)/,
-                    meego: /(MeeGo).+NokiaBrowser\/(\d+)\.([\d\._]+)/,
-                    webos: /(webOS)\/(\d+)\.(\d+(\.\d+)?)/,
-                    blackberry: /(BlackBerry|PlayBook).*?Version\/(\d+)\.(\d+(\.\d+)?)/
+        var original = $("#simulator")[0].src,
+            mobiles = {
+                ipad: {
+                    ua: "Mozilla/5.0(iPad; U; CPU OS 7_0_2 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0.2 Mobile/11a501 Safari/8536.25",
+                    size: "11px"
                 },
-                osRxs = {
-                    ios: /^i(phone|pad|pod)$/i,
-                    android: /^android|fire$/i
+                iphone: {
+                    ua: "Mozilla/5.0 (iPhone; U; CPU iPhone OS 7_0_2 like Mac OS X; xx-xx) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/11a501",
+                    size: "12px"
                 },
-                testOs = function (agent) {
-                    for (var os in osRxs) {
-                        if (osRxs.hasOwnProperty(os) && osRxs[os].test(agent))
-                            return os;
-                    }
-                    return agent;
-                };
-
-            for (var agent in agentRxs) {
-                if (agentRxs.hasOwnProperty(agent)) {
-                    match = ua.match(agentRxs[agent]);
-                    if (match) {
-                        os = {};
-                        os.device = agent;
-                        os.name = testOs(agent);
-                        os[os.name] = true;
-                        os.majorVersion = match[2];
-                        os.minorVersion = match[3].replace("_", ".");
-                        os.flatVersion = os.majorVersion + os.minorVersion.replace(".", "");
-                        os.flatVersion = os.flatVersion + (new Array(4 - os.flatVersion.length).join("0")); // Pad with zeroes
-                        os.appMode = window.navigator.standalone || typeof window._nativeReady !== "undefined";
-
-                        break;
-                    }
+                nexus5: {
+                    ua: "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19",
+                    size: "12px"
+                },
+                a100: {
+                    ua: "Mozilla/5.0 (Linux; U; Android 4.0; en-us; A100 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13",
+                    size: "11px"
+                },
+                z10: {
+                    ua: "Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+",
+                    size: "12px"
+                },
+                playbook: {
+                    ua: "Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.0.0; en-US) AppleWebKit/535.1+ (KHTML, like Gecko) Version/7.2.0.0 Safari/535.1+",
+                    size: "11px"
+                },
+                wp8: {
+                    ua: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)",
+                    size: "14px"
+                },
+                n9: {
+                    ua: "Mozilla/5.0 (MeeGo; NokiaN950-00/00) AppleWebKit/534.13 (KHTML, like Gecko) NokiaBrowser/8.5.0 Mobile Safari/534.13",
+                    size: "11px"
                 }
-            }
-            return os;
-        }
-
-        function changeDevice() {
-            var devicename = deviceSelector.value(),
-                head = $(document.getElementsByTagName("head")[0]),
-                deviceLink = head.find("link[href*='devices/']"),
-                url = "devices/" + devicename + "/styles.css", newLink, matches;
-
-            if (!$.browser.msie) {
-                newLink = deviceLink
-                    .eq(0)
-                    .clone()
-                    .attr("href", url);
-            } else {
-                newLink = document.createStyleSheet(url);
-            }
-
-            head.append(newLink);
-
-            if (frame.contentWindow.kendo)
-                currentDevice = frame.contentWindow.kendo.support.mobileOS = detectOS(mobiles[devicename].ua);
-
-            setOrientation($(".device-container")[0].className.match(/horizontal|vertical/)[0]);
-
-            $(foreignDocument.body).removeClass("km-ios km-android").addClass("km-" + (!currentDevice ? "ios" : currentDevice.name));
-            matches = deviceSelector.text().match(/(^\w+)\s(.*)/m);
-            $(".description .device")
-                    .html(matches[1] + "<span class='model'>" + matches[2] + "</span>")
-                    .css("background-image", "url('images/" + devicename + ".png')");
-
-            setTimeout(function () {
-                deviceLink.remove();
-                setTimeout( function () {
-                    $(".content").kendoStop(true, true).kendoAnimate("slide:down", true, function () {
-                        resizeContent();
-                    });
-                }, 500);
-            }, 0);
-        }
-
-        function resizeContent() {
-            $(".device-container")[0].style.cssText = "";
-            var offset = $(".device-skin").css("padding-top");
-            if (offset != "0px") {
-                $(".device-container").animate({ paddingTop: "+" + offset });
-            }
-        }
-
-        function fixAdjust() {
-            var doc = $(foreignDocument.documentElement);
-
-            if (kendo.support.transitions.prefix == "webkit") {
-                doc.add(foreignDocument.body).css("-webkit-text-size-adjust", "auto");
-            }
-
-            changeFontSize();
-        }
-
-        function changeFontSize() {
-            $(frame.contentWindow.document.documentElement).css({
-                fontSize: $(".device-skin").css("font-size")
-            }).css("font-size");
-        }
+            },
+            currentDevice = kendo.support.detectOS(mobiles["ipad"].ua);
 
         function setOrientation(orientation) {
             var orientationClass = "km-" + orientation;
@@ -148,24 +55,132 @@ if ($.browser.webkit || $.browser.mozilla) {
                 .addClass(orientationClass);
         }
 
+        function changeDevice() {
+            var devicename = deviceSelector.value(),
+                head = $(document.getElementsByTagName("head")[0]),
+                deviceLink = head.find("link[href*='devices/']"),
+                location = (/^.*?(?=\?|#)/.exec(window.location.href) || [ window.location.href ])[0],
+                url, newLink, matches;
+
+            location += location[location.length-1] != "/" ? "/" : "";
+
+            url = location + "devices/" + devicename + "/styles.css";
+
+            if (kendo.support.browser.msie && kendo.support.browser.version < 11) {
+                newLink = document.createStyleSheet(url);
+            } else {
+                newLink = deviceLink
+                    .eq(0)
+                    .clone()
+                    .attr("href", url);
+            }
+
+            head.append(newLink);
+
+            matches = deviceSelector.text().match(/(^\w+)\s(.*)/m);
+            $(".description .device")
+                    .html(matches[1] + "<span class='model'>" + matches[2] + "</span>")
+                    .css("background-image", "url('" + location + "images/" + devicename + ".png')");
+
+            setTimeout(function () {
+                deviceLink.remove();
+                setTimeout( function () {
+                    $(".content").kendoStop(true, true).kendoAnimate("tile:up", function () {
+                        resizeContent();
+                    });
+                }, 500);
+            }, 0);
+        }
+
+        function resizeContent() {
+            var container = $(".device-container"),
+                iframe = $(".device-container iframe");
+            container[0].style.cssText = "";
+            iframe[0].style.cssText = "";
+            var offset = parseInt($(".device-skin").css("padding-top"), 10),
+                heightOffset = parseInt(container.css("padding-top"), 10) - offset;
+
+            if (offset) {
+                iframe.animate({
+                    height: iframe.height() + heightOffset
+                });
+                container.animate({
+                    paddingTop: "+" + offset
+                });
+            }
+        }
+
+        function fixAdjust() {
+            var doc = $(foreignDocument.documentElement);
+
+            if (kendo.support.transitions.prefix == "webkit") {
+                doc.add(foreignDocument.body).css("-webkit-text-size-adjust", "auto");
+            }
+
+            changeFontSize();
+        }
+
+        function loadUrl(url) {
+            var currentMobile = mobiles[deviceSelector.value()];
+
+            $.get(url, function (file) {
+                var fileContent = file.replace(/(<head\b.*?>)/igm, "$1\n<base href='" + url + "' />\n" +
+                    "<script>\n" +
+                    "    var kendoSimulatorAgent = function() {\n" +
+                    "            return '" + currentMobile.ua + "';\n" +
+                    "        };\n" +
+                    "    if (navigator.__defineGetter__) {\n" +
+                    "        navigator.__defineGetter__('userAgent', kendoSimulatorAgent);\n" +
+                    "    }  else if (Object.defineProperty) {\n" +
+                    "        Object.defineProperty(navigator, 'userAgent', {\n" +
+                    "            get: kendoSimulatorAgent\n" +
+                    "        });\n" +
+                    "    }\n" +
+                    "    document.addEventListener('DOMContentLoaded', function () {\n" +
+                    "        if (kendo.support.mobileOS.wp) {\n" +
+                    "            setTimeout(function () { $(document.body).removeClass('km-wp-light').addClass('km-wp-dark'); }, 0)\n" +
+                    "        }\n" +
+                    "    }, false)\n" +
+                    "</script>\n" +
+                    "<style>\n" +
+                    "    html { font-size: " + currentMobile.size + " !important; }\n" +
+                    "    body { overflow: hidden; height: 100% !important; }\n" +
+                    "</style>\n"),
+                preview = frame.contentDocument ||  frame.contentWindow.document;
+
+                currentDevice = kendo.support.detectOS(currentMobile.ua);
+
+                if (window.URL && !kendo.support.browser.msie) {
+                    window.blob = window.URL.createObjectURL(new Blob([ fileContent ], { type: "text/html" }));
+                    frame.contentWindow.location.href = window.blob;
+                } else {
+                    preview.open();
+                    preview.write(fileContent);
+                    preview.close();
+
+                    frame.contentWindow.addEventListener("hashchange", function (e) {
+                        window.scrollTo(0,0);
+                    }, true);
+                }
+            });
+        }
+
         var deviceSelector = $("#device-selector")
                                     .val("ipad")
                                     .change( function () {
-                                        $(".content").kendoStop(true, true).kendoAnimate("slide:down", function () {
-                                            frame.contentWindow.location.href = frame.contentWindow.location.href.replace(/#.*$/, ""); // Remove the anchor or the browser will try to scroll to it!
-                                            setTimeout(function () {
-                                                fixAdjust();
-                                            }, 200);
+                                        $(".content").kendoStop(true, true).kendoAnimate("tile:up", true, function () {
+                                            loadUrl(original);
                                         });
                                     })
                                     .kendoDropDownList({
                                         dataSource: [
-                                            { text: "Apple iPad 2", value: "ipad" },
-                                            { text: "Apple iPhone 4", value: "iphone" },
-                                            { text: "Google Nexus S", value: "nexuss" },
-                                            { text: "Acer Iconia Tab A100", value: "a100" },
-                                            { text: "BlackBerry Torch 9860", value: "torch" },
-                                            { text: "BlackBerry PlayBook", value: "playbook" }
+                                            { text: "Apple iPad Air", value: "ipad" },
+                                            { text: "Apple iPhone 5S", value: "iphone" },
+                                            { text: "Google Nexus 5", value: "nexus5" },
+                                            /*{ text: "Acer Iconia Tab A100", value: "a100" },
+                                            { text: "BlackBerry Z10", value: "z10" },
+                                            { text: "BlackBerry PlayBook", value: "playbook" },
+                                            { text: "Nokia Lumia 920", value: "wp8" }*/
                                         ],
                                         dataTextField: "text",
                                         dataValueField: "value"
@@ -175,10 +190,21 @@ if ($.browser.webkit || $.browser.mozilla) {
             addressBar = $("#address-bar"),
             foreignDocument;
 
-        $(window).bind("DOMFrameContentLoaded", function () { setTimeout(changeFontSize, 300); } );
+        function changeFontSize() {
+            $(frame).css("height", "");
+
+            foreignDocument = frame.contentWindow.document;
+            setTimeout(function () {
+                setOrientation($(".device-container")[0].className.match(/horizontal|vertical/)[0]);
+            }, 300);
+        }
+
+        $(window).bind("DOMFrameContentLoaded", changeFontSize);
         $(frame.contentWindow).bind("DOMContentLoaded", changeFontSize);
 
         frame.onload = function () {
+            frame.contentWindow.orientation = $(".device-container").hasClass("horizontal") ? 90 : 0;
+
             foreignDocument = frame.contentWindow.document;
             if (frame.src != addressBar.val())
                 addressBar.val(frame.src);
@@ -195,20 +221,28 @@ if ($.browser.webkit || $.browser.mozilla) {
             changeDevice();
         };
 
+        loadUrl(original);
+
         $(document)
                 .delegate("[data-orientation]", "click", function () {
                     var button = $(this),
+                        container = $(".device-container"),
                         currentOrientation = button.data("orientation");
 
-                    if (!$(".device-container").hasClass(button.data("orientation"))) {
-                        $(".content").kendoStop(true, true).kendoAnimate("slide:left", function () {
+                    if (!container.hasClass(button.data("orientation"))) {
+                        $(".content").kendoStop(true, true).kendoAnimate("tile:right", true, function () {
 
                             setOrientation(currentOrientation);
 
-                            $(".device-container")[0].style.cssText = "";
+                            frame.contentWindow.orientation = currentOrientation == "horizontal" ? 90 : 0;
+                            $(foreignDocument.documentElement)
+                                .removeClass("km-horizontal km-vertical")
+                                .addClass("km-" + currentOrientation);
+
+                            container[0].style.cssText = "";
 
                             setTimeout( function () {
-                                $(".content").kendoStop(true, true).kendoAnimate("slide:left", true, function () {
+                                $(".content").kendoStop(true, true).kendoAnimate("tile:right", function () {
                                     resizeContent();
                                     fixAdjust();
                                 });

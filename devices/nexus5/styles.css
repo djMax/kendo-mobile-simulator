@@ -1,60 +1,70 @@
 .device-skin
 {
-    font-size: 11px; /* Sets the zoom level */
+    font-size: 12px; /* Sets the zoom level */
 }
 
 .device-container.vertical .device-skin
 {
-    padding-top: 2.7cm;
+    padding-top: 1.88cm;
     background-image: url("images/vertical.png");
 }
 
 .device-container.horizontal .device-skin
 {
-    padding-top: 2.3cm;
+    padding-top: 1cm;
     background-image: url("images/horizontal.png");
 }
 
 .device-container.vertical
 {
-    height: 1000px;
-    width: 850px;
-    padding: 3.42cm 6.6cm 10.1cm 6.74cm;
-    bottom: -150px;
+    bottom: -100px;
+    width: 1050px;
+    height: 849px;
+    padding: 3cm 10.146cm 8.46cm 10.121cm;
 }
 
 .device-container.horizontal
 {
-    height: 800px;
-    padding: 3.04cm 10.4cm 11.3cm 10.56cm;
-    width: 1360px;
-    bottom: -150px;
+    bottom: -50px;
+    width: 850px;
+    height: 734px;
+    padding: 2cm 4.58cm 10cm;
+}
+
+.device-container.vertical iframe
+{
+    height: 400px;
+}
+
+.device-container.horizontal iframe
+{
+    height: 230px;
 }
 
 #address-bar
 {
-    color: #FFFFFF;
     height: 18px;
 }
 
 .device-container.vertical #address-bar
 {
-    left: 380px;
-    top: 105px;
-    width: 130px;
+    left: 394px;
+    top: 83px;
+    width: 154px;
 }
 
 .device-container.horizontal #address-bar
 {
-    left: 520px;
-    top: 90px;
-    width: 352px;
+    left: 188px;
+    top: 50px;
+    width: 350px;
 }
 
 .device-container #navigate-back
 {
     background: rgba(255,255,255,.3);
-    top: auto;
+    width: 30px;
+    height: 30px;
 }
 
 .device-container #navigate-back:hover
@@ -64,16 +74,13 @@
 
 .device-container.vertical #navigate-back
 {
-    bottom: 360px;
-    left: 260px;
-    width: 32px;
-    height: 22px;
+    top: auto;
+    bottom: 293px;
+    left: 431px;
 }
 
 .device-container.horizontal #navigate-back
 {
-    bottom: 400px;
-    left: 403px;
-    width: 31px;
-    height: 24px;
+    top: 248px;
+    left: 686px;
 }
