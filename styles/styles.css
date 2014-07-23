@@ -245,14 +245,8 @@ body:after
              url("../devices/iphone/images/vertical.png")
              url("../devices/nexus5/images/horizontal.png")
              url("../devices/nexus5/images/vertical.png")
-             url("../devices/playbook/images/horizontal.png")
-             url("../devices/playbook/images/vertical.png")
              url("../devices/wp8/images/horizontal.png")
-             url("../devices/wp8/images/vertical.png")
-             url("../devices/z10/images/horizontal.png")
-             url("../devices/z10/images/vertical.png")
-             url("../devices/a100/images/horizontal.png")
-             url("../devices/a100/images/vertical.png");
+             url("../devices/wp8/images/vertical.png");
     display: none;
 }
 

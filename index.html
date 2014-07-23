@@ -5,15 +5,15 @@
     <title>Kendo UI Online Multi-Device simulator | Kendo UI demos</title>
     <meta content="Play with Kendo UI mobile simulator and quickly test out Kendo UI in different mobile devices." name="description" />
 
-    <link href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css" rel="stylesheet" />
-    <link href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.metroblack.min.css" rel="stylesheet" />
+    <link href="styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="styles/kendo.metroblack.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="devices/ipad/styles.css" />
     <link rel="stylesheet" href="styles/styles.css" />
 
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.all.min.js"></script>
-    <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.timezones.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="js/kendo.all.min.js"></script>
+    <script src="js/kendo.timezones.min.js"></script>
     <script>
         if (kendo.support.mobileOS) {
             top.location.href = "content";
@@ -43,9 +43,7 @@
     <div class="content">
         <div class="device-container vertical">
             <div class="device-skin"></div>
-            <input id="address-bar" type="text" onchange="frame.src = 'http://' + this.value.replace('http://', '')" />
-            <button id="navigate-back"></button>
-            <iframe id="simulator" src="content"></iframe>
+            <iframe id="simulator" src="content/blank.html"></iframe>
         </div>
     </div>
     <div class="fake3d"></div>

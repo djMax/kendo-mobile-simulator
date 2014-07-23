@@ -1,6 +1,7 @@
 if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.support.browser.msie && kendo.support.browser.version >= 10)) {
     (function($, undefined) {
-        var original = $("#simulator")[0].src,
+        var qs = (document.location.search||'').replace(/(^\?)/,'').split("&").map(function(n){return n = n.split("="),this[n[0]] = decodeURIComponent(n[1]),this}.bind({}))[0];
+        var original = qs.url || $("#simulator")[0].src,
             mobiles = {
                 ipad: {
                     ua: "Mozilla/5.0(iPad; U; CPU OS 7_0_2 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0.2 Mobile/11a501 Safari/8536.25",
@@ -18,21 +19,9 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
                     ua: "Mozilla/5.0 (Linux; U; Android 4.0; en-us; A100 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13",
                     size: "11px"
                 },
-                z10: {
-                    ua: "Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+",
-                    size: "12px"
-                },
-                playbook: {
-                    ua: "Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.0.0; en-US) AppleWebKit/535.1+ (KHTML, like Gecko) Version/7.2.0.0 Safari/535.1+",
-                    size: "11px"
-                },
                 wp8: {
                     ua: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)",
                     size: "14px"
-                },
-                n9: {
-                    ua: "Mozilla/5.0 (MeeGo; NokiaN950-00/00) AppleWebKit/534.13 (KHTML, like Gecko) NokiaBrowser/8.5.0 Mobile Safari/534.13",
-                    size: "11px"
                 }
             },
             currentDevice = kendo.support.detectOS(mobiles["ipad"].ua);
@@ -62,6 +51,7 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
                 location = (/^.*?(?=\?|#)/.exec(window.location.href) || [ window.location.href ])[0],
                 url, newLink, matches;
 
+            location = location.replace(/index\.html$/,"");
             location += location[location.length-1] != "/" ? "/" : "";
 
             url = location + "devices/" + devicename + "/styles.css";
@@ -137,10 +127,8 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
                     "        });\n" +
                     "    }\n" +
                     "    document.addEventListener('DOMContentLoaded', function () {\n" +
-                    "        if (kendo.support.mobileOS.wp) {\n" +
-                    "            setTimeout(function () { $(document.body).removeClass('km-wp-light').addClass('km-wp-dark'); }, 0)\n" +
-                    "        }\n" +
                     "    }, false)\n" +
+                    "    window['ppAndroid'] = {methodCall:function () { window.parent.nativeSim(arguments); }};" +
                     "</script>\n" +
                     "<style>\n" +
                     "    html { font-size: " + currentMobile.size + " !important; }\n" +
@@ -166,7 +154,7 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
         }
 
         var deviceSelector = $("#device-selector")
-                                    .val("ipad")
+                                    .val("iphone")
                                     .change( function () {
                                         $(".content").kendoStop(true, true).kendoAnimate("tile:up", true, function () {
                                             loadUrl(original);
@@ -176,11 +164,7 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
                                         dataSource: [
                                             { text: "Apple iPad Air", value: "ipad" },
                                             { text: "Apple iPhone 5S", value: "iphone" },
-                                            { text: "Google Nexus 5", value: "nexus5" },
-                                            /*{ text: "Acer Iconia Tab A100", value: "a100" },
-                                            { text: "BlackBerry Z10", value: "z10" },
-                                            { text: "BlackBerry PlayBook", value: "playbook" },
-                                            { text: "Nokia Lumia 920", value: "wp8" }*/
+                                            { text: "Google Nexus 5", value: "nexus5" }
                                         ],
                                         dataTextField: "text",
                                         dataValueField: "value"
@@ -202,6 +186,7 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
         $(window).bind("DOMFrameContentLoaded", changeFontSize);
         $(frame.contentWindow).bind("DOMContentLoaded", changeFontSize);
 
+        var suppressedInitialFrameLoad = false;
         frame.onload = function () {
             frame.contentWindow.orientation = $(".device-container").hasClass("horizontal") ? 90 : 0;
 
@@ -218,10 +203,19 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
                     $(foreignDocument).find(".km-scroll-container:visible")[0].dispatchEvent(event);
             });
 
-            changeDevice();
+            if (suppressedInitialFrameLoad) {
+                changeDevice();
+            } else {
+                suppressedInitialFrameLoad = true;
+            }
         };
 
         loadUrl(original);
+
+        window["nativeSim"] = function (nativeArgs) {
+            console.log(nativeArgs);
+            console.log(arguments);
+        };
 
         $(document)
                 .delegate("[data-orientation]", "click", function () {
