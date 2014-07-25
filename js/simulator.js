@@ -212,10 +212,47 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
 
         loadUrl(original);
 
+        var backTag = null;
         window["nativeSim"] = function (nativeArgs) {
-            console.log(nativeArgs);
-            console.log(arguments);
+            var args;
+            try {
+                args = JSON.parse(nativeArgs[1]);
+            } catch (x) {
+                args = null;
+            }
+            switch (nativeArgs[0]) {
+                case "SetTitleBar":
+                    if (args.hasOwnProperty("WindowTitle")) {
+                        $('#mobile-header>.header-title').text(args.WindowTitle);
+                    }
+                    if (args.hasOwnProperty("LeftButton")) {
+                        var lb = $('#mobile-header>.left-button');
+                        if (args.LeftButton && args.LeftButton.text) {
+                            lb.text(args.LeftButton.text);
+                            lb.show();
+                            backTag = args.LeftButton.tag;
+                        } else {
+                            lb.hide();
+                            backTag = null;
+                        }
+                    }
+                    break;
+                default:
+                    console.log('Unknown native bridge call', arguments);
+                    break;
+            }
         };
+
+        $('#mobile-header>.left-button').on('click', function () {
+            if (backTag) {
+                try {
+                    window.frames[0].$.NativeBridge.callHandler(backTag);
+                } catch (x) {
+                    console.log('Failed to call registered back button handler.');
+                    console.log(x);
+                }
+            }
+        });
 
         $(document)
                 .delegate("[data-orientation]", "click", function () {

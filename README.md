@@ -25,3 +25,10 @@ Project directory structure:
 /index.html - start here.
 </li>
 </ul>
+
+This is the "PayPal Enhanced Checkin" version of the simulator. It simulates the main components
+of the PayPal consumer app hosting a post-checkin URL. You should be able to deploy it
+on your own app server just by copying the files and going to index.html?url=[yoururl]
+
+Because of cross site scripting, you shouldn't host this service for apps on other domains
+(and it wouldn't work out of the box anyawys).

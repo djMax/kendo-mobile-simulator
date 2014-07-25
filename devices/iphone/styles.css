@@ -46,6 +46,20 @@
     height: 18px;
 }
 
+#mobile-header>.header-title {
+    text-align: center;
+    font-size: 18px;
+    top: 20%;
+    position: relative;
+}
+
+#mobile-header>.left-button {
+    font-size: 14px;
+    top: 18%;
+    left: 5px;
+    position: absolute;
+}
+
 .device-container.vertical #address-bar
 {
     left: 413px;
@@ -58,6 +72,19 @@
     left: 188px;
     top: 37px;
     width: 240px;
+}
+
+#mobile-header {
+    height: 32px;
+}
+
+.device-container.vertical #mobile-header {
+    width: 248px;
+    top: 110px;
+}
+
+.device-container.horizontal #mobile-header {
+    width: 392px;
 }
 
 .device-container #navigate-back
