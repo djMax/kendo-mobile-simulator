@@ -204,6 +204,7 @@ if (kendo.support.browser.webkit || kendo.support.browser.mozilla || (kendo.supp
             });
 
             if (suppressedInitialFrameLoad) {
+                $('#mobile-header>.header-title').text('Simulator');
                 changeDevice();
             } else {
                 suppressedInitialFrameLoad = true;
